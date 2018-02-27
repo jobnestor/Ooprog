@@ -43,11 +43,11 @@ class Person  {                   //  Abstrakt baseklasse.
 
   public:
     Person()  {
-		char temp[MAXTXT + 1];
+		char temp[MAXTXT + 1];	//	Lager temp for gitt tekst
 		cout << "Skriv inn fornavn:\t";
-		cin.getline(temp, MAXTXT);
-		fornavn = new char[strlen(temp) + 1];
-		strcpy(fornavn, temp);
+		cin.getline(temp, MAXTXT);	// Leser inn i tempen
+		fornavn = new char[strlen(temp) + 1];	//	Lager et fornavn med
+		strcpy(fornavn, temp);						// noyaktig lengde
 		cout << "Skriv inn din fodeslesdato:\t";
 			cin.getline(fodselsdato, DATOLEN);
     }
@@ -89,18 +89,18 @@ class Barn : public Person  {          //  Konkret klasse.
     Barn()  {
 		char kj;
 		cout << "Hvilket kjonn har barnet? J for jente G for gutt\t";
-		kj = les();
+		kj = les();			//	Setter kjonnverdi
 		kj == 'J' ? (kjonn = jente) : (kjonn = gutt);
     }
 
     Barn(ifstream & inn) : Person(inn)  {
 		char kj;
-		inn >> kj;
+		inn >> kj;			//Leser kjonnverdi fra fil
 		kj == 'J' ? (kjonn = jente) : (kjonn = gutt);
     }
 
     void skrivTilFil(ofstream & ut)  {
-		char kj;
+		char kj;			//	Skriver kjonnverdi til fil
 		(kjonn == jente) ? (ut << " J") : (ut << " G");
     }
 
@@ -110,7 +110,8 @@ class Barn : public Person  {          //  Konkret klasse.
     }
 
 	bool likAar(char aaaa[])
-	{
+	{						//	Sjekker om barnets fodselsdato sine 2 forste
+							//	Siffre er lik de to siste i gitt aar
 		return ((fodselsdato[0] == aaaa[2]) && (fodselsdato[1] == aaaa[3]));
 	}
 };
@@ -196,7 +197,7 @@ class Ansatt : public Voksen  {        //  Konkret klasse.
 
     Ansatt(int n)  {
 		nr = n;
-		antBarn = 0;
+		antBarn = 0;		// Nullstiller antBar og partner peker
 		partner = nullptr;
 		char temp[MAXTXT + 1];
 		cout << "Skriv inn adresse:\t";
@@ -207,7 +208,26 @@ class Ansatt : public Voksen  {        //  Konkret klasse.
 
     Ansatt(int n, ifstream & inn) : Voksen(inn)  {
 		nr = n;
-    }
+		int harPart, harBarn;
+		char temp[MAXTXT + 1];
+		inn >> nr; inn.ignore(2);
+		inn >> antBarn; inn.ignore(2);
+		inn.getline(temp, MAXTXT);
+		adresse = new char[strlen(temp) + 1];
+		strcpy(adresse, temp);
+		inn.ignore(2);
+		inn >> harPart; inn.ignore(2);
+		if(harPart == 1)	{
+			partner = new Partner(inn);
+		}
+		inn.ignore(2);
+		inn >> harBarn;
+		if(harBarn != 0)	{
+			for(int i = 0; i <= antBarn; i++)	{
+				barn[i] = new Barn(inn);
+			}
+		}
+	}
 
     ~Ansatt()  {
 		delete[] adresse;
@@ -226,7 +246,7 @@ class Ansatt : public Voksen  {        //  Konkret klasse.
 			partner->skrivTilFil(ut);
 		}
 		if(antBarn != 0)	{
-			ut << "1" << '\n';
+			ut << antBarn << '\n';
 		   	for(int i = 0; i <= antBarn; i++)	{
 			   barn[i]->skrivTilFil(ut);
 		   }
