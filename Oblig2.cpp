@@ -350,15 +350,15 @@ char les()  {                     //  Leser og returnerer ETT upcaset tegn.
     cin >> ch;  cin.ignore();
     return (toupper(ch));
 }
-//  Skriver ledetekst (t), leser og
-//    returnerer et tall mellom min og max:
+                                  //  Skriver ledetekst (t), leser og
+                                  //    returnerer et tall mellom min og max:
 int les(char* t, int min, int max)  {
-    int tall;
-    do  {
-        cout << '\t' << t << " (" << min << '-' << max <<  "):  ";
-        cin >> tall;  cin.ignore();
-    } while (tall < min  ||  tall > max);
-    return tall;
+  int tall;
+  do  {
+    cout << '\t' << t << " (" << min << '-' << max <<  "):  ";
+    cin >> tall;  cin.ignore();
+  } while (tall < min  ||  tall > max);
+  return tall;
 }
 
 //  Leter etter en ansatt med et gitt nummer
