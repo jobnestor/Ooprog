@@ -453,7 +453,7 @@ void partnerEndring()  {              //  P - ENDRE DATA OM PARTNER:
 }
 
 void nyttBarn()  {                    //  B - NYTT BARN:
-    int ansNr = les("Skriv inn et ansattnummer:\t", 0, 1000);
+    int ansNr = les("Skriv inn et ansattnummer:\t", 0, 1000);   // Glemte å sjekke om arrayen var full......
     if(finnesAllerede(ansNr) != 0)	{
         ansatte[ansNr]->nyttBarn();
     }
